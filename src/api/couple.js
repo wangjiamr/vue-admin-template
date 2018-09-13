@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import {postRequest} from '@/utils/request'
-const module='job'
+const module='couple'
 
 export const getList = (params) => {
   return request({

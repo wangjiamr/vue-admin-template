@@ -4,22 +4,15 @@
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-button type="info" style="margin-bottom: 20px;" @click="dialogShow">New</el-button>
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      stripe
-      fit
-      highlight-current-row>
-      <el-table-column label="Title" width="180">
+    <div class="search_input">
+      <el-input placeholder="Enter keywords to search" v-model="params.keyword" class="input-with-select" @keyup.enter.native="query">
+        <el-button slot="append" icon="el-icon-search" @click="query"></el-button>
+      </el-input>
+    </div>
+    <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
+    <el-table-column label="Title" width="180">
         <template slot-scope="scope">
           {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="price" width="120">
-        <template slot-scope="scope">
-          <span>{{ scope.row.price }}</span>
         </template>
       </el-table-column>
       <el-table-column label="gender" width="120">
@@ -34,34 +27,16 @@
       </el-table-column>
       <el-table-column label="operate">
         <template slot-scope="scope">
-          <el-button
-                  size="mini"
-                  @click="editShow( scope.row)">Edit
-          </el-button>
-          <el-button v-if="scope.row.useYn==='Y'"
-                     size="mini"
-                     type="danger"
-                     @click="handleDisable(scope.row)">Disabled
-          </el-button>
-          <el-button v-if="scope.row.useYn!=='Y'"
-                     size="mini"
-                     type="warning"
-                     @click="handleEnable(scope.row)">Enable
-          </el-button>
-          <el-button
-                     size="mini"
-                     type="info"
-                     @click="effectDialogShow(scope.row)">Effect
-          </el-button>
-          <el-button
-                  size="mini"
-                  type="info"
-                  @click="requireDialogShow(scope.row)">Require
-          </el-button>
+          <el-button size="mini"  @click="editShow( scope.row)">Edit </el-button>
+          <el-button size="mini" type="danger" @click="handleDisable(scope.row)" v-if="scope.row.useYn==='Y'">Disabled </el-button>
+          <el-button size="mini" type="warning"  @click="handleEnable(scope.row)" v-if="scope.row.useYn!=='Y'" >Enable </el-button>
+          <el-button size="mini" type="info"  @click="effectDialogShow(scope.row)">Effect</el-button>
+          <el-button size="mini" type="info" @click="requireDialogShow(scope.row)">Require</el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
+            style="margin-top: 20px;"
             @size-change="sizeChange"
             @current-change="pageChange"
             :current-page="pageObj.currentPage"
@@ -70,13 +45,10 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="pageObj.totalRecord">
     </el-pagination>
-    <el-dialog :title='id?"Edit job":"New job"' :visible.sync="dialogVisible" width="30%" close="resetForm">
+    <el-dialog :title='id?"Edit Couple":"New Couple"' :visible.sync="dialogVisible" width="30%" close="resetForm">
       <el-form label-width="80px" :model="form" :rules="rules" ref="form">
         <el-form-item label="Title:" prop="title">
           <el-input type="text" v-model="form.title"></el-input>
-        </el-form-item>
-        <el-form-item label="price:" prop="price">
-          <el-input type="text" v-model.number="form.price"></el-input>
         </el-form-item>
         <el-form-item label="gender:" prop="gender">
           <el-select v-model="form.gender" prop="gender">
@@ -90,7 +62,7 @@
         </el-form-item>
 
         <el-form-item label="remarks">
-          <el-input type="text" v-model="form.remarks"></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="form.remarks"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -102,19 +74,12 @@
 
 
     <!--effect-->
-    <el-dialog :title='job?job.title+"  Effect List":""' :visible.sync="dialogVisibleListEffect" width="50%">
+    <el-dialog :title='couple?couple.title+" Effect List":""' :visible.sync="dialogVisibleListEffect" width="50%">
       <el-button type="info" style="margin-bottom: 20px;" @click="dialogShowEffect">New</el-button>
-      <el-table
-              v-loading="listLoadingEffect"
-              :data="listEffect"
-              element-loading-text="Loading"
-              border
-              stripe
-              fit
-              highlight-current-row>
-        <el-table-column label="Job" width="180">
+      <el-table v-loading="listLoadingEffect" :data="listEffect" element-loading-text="Loading"  border stripe  fit  highlight-current-row>
+        <el-table-column label="Couple" width="180">
           <template slot-scope="scope">
-            {{ scope.row.jobId.title }}
+            {{ scope.row.coupleId.title }}
           </template>
         </el-table-column>
         <el-table-column label="operation" width="90">
@@ -134,20 +99,13 @@
         </el-table-column>
         <el-table-column label="operate">
           <template slot-scope="scope">
-            <el-button
-                    size="mini"
-                    @click="editShowEffect( scope.row)">Edit
-            </el-button>
-            <el-button
-                    size="mini"
-                    type="danger"
-                    @click="deleteEffect(scope.row)">Del
-            </el-button>
+            <el-button  size="mini"  @click="editShowEffect( scope.row)">Edit </el-button>
+            <el-button  size="mini" type="danger"  @click="deleteEffect(scope.row)">Del </el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :title='idEffect?"Edit effect":"New effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
+    <el-dialog :title='idEffect?"Edit Effect":"New Effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
       <el-form label-width="80px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
         <el-form-item label="operation:" prop="operation">
           <el-select v-model="formEffect.operation">
@@ -181,19 +139,12 @@
     </el-dialog>
 
     <!--required-->
-    <el-dialog :title='job?job.title+"  Require List":""' :visible.sync="dialogVisibleListRequire" width="50%">
+    <el-dialog :title='couple?couple.title+"  Require List":""' :visible.sync="dialogVisibleListRequire" width="50%">
       <el-button type="info" style="margin-bottom: 20px;" @click="dialogShowRequire">New</el-button>
-      <el-table
-              v-loading="listLoadingRequire"
-              :data="listRequire"
-              element-loading-text="Loading"
-              border
-              stripe
-              fit
-              highlight-current-row>
-        <el-table-column label="Job" width="180">
+      <el-table v-loading="listLoadingRequire" :data="listRequire" element-loading-text="Loading" border  stripe  fit highlight-current-row>
+        <el-table-column label="Couple" width="180">
           <template slot-scope="scope">
-            {{ scope.row.jobId.title }}
+            {{ scope.row.coupleId.title }}
           </template>
         </el-table-column>
         <el-table-column label="attrKey" width="100">
@@ -208,20 +159,13 @@
         </el-table-column>
         <el-table-column label="operate">
           <template slot-scope="scope">
-            <el-button
-                    size="mini"
-                    @click="editShowRequire( scope.row)">Edit
-            </el-button>
-            <el-button
-                    size="mini"
-                    type="danger"
-                    @click="deleteRequire(scope.row)">Del
-            </el-button>
+            <el-button  size="mini"  @click="editShowRequire( scope.row)">Edit </el-button>
+            <el-button  size="mini"  type="danger"  @click="deleteRequire(scope.row)">Del </el-button>
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :title='idRequire?"Edit require":"New require"' :visible.sync="dialogVisibleInputRequire" width="30%">
+    <el-dialog :title='idRequire?"Edit Require":"New Require"' :visible.sync="dialogVisibleInputRequire" width="30%">
       <el-form label-width="80px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
         <el-form-item label="attrKey:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
@@ -247,9 +191,9 @@
 </template>
 
 <script>
-  import {getList, add, edit, enable, disable,getOperation,getAttr} from '@/api/job'
-  import {effectList,addEffect,editEffect,deleteEffect} from '@/api/job'
-  import {requireList,addRequire,editRequire,deleteRequire} from '@/api/job'
+  import {getList, add, edit, enable, disable,getOperation,getAttr} from '@/api/couple'
+  import {effectList,addEffect,editEffect,deleteEffect} from '@/api/couple'
+  import {requireList,addRequire,editRequire,deleteRequire} from '@/api/couple'
 
 
   export default {
@@ -279,17 +223,12 @@
       id:null,
       form: {
         title: null,
-        price: null,
         gender: null,
         remarks: null
       },
       rules: {
         title: [
           {required: true, message: 'Required field,please entry ', trigger: 'blur'}
-        ],
-        price: [
-          {required: true, message: 'Required field,please entry ', trigger: 'blur'},
-          {type: 'number', message: 'Muset be number'}
         ],
         gender: [
           {required: true, message: 'Required field,please select ', trigger: 'blur'}
@@ -300,7 +239,7 @@
       existAttr:[],
       operations:[],
       attrKeys:[],
-      job:null,
+      couple:null,
       dialogVisibleListEffect:false,
       dialogVisibleInputEffect:false,
       listEffect: null,
@@ -308,11 +247,11 @@
       paramsEffect: {
         start: 0,
         limit: 10,
-        jobId: ''
+        coupleId: ''
       },
       idEffect:null,
       formEffect:{
-        jobId:null,
+        coupleId:null,
         operation:null,
         attrKey:null,
         value:null
@@ -336,11 +275,11 @@
       paramsRequire: {
         start: 0,
         limit: 10,
-        jobId: ''
+        coupleId: ''
       },
       idRequire:null,
       formRequire:{
-        jobId:null,
+        coupleId:null,
         attrKey:null,
         value:null
       },
@@ -398,6 +337,10 @@
       }
       return value
     },
+    query(){
+      this.params.start = 0
+      this.fetchData()
+    },
     fetchData() {
       this.listLoading = true
       getList(this.params).then(({data}) => {
@@ -426,7 +369,6 @@
       this.id=null
       this.form = {
         title: null,
-        price: null,
         gender: null,
         remarks: null
       }
@@ -463,7 +405,6 @@
       }
       this.form = {
         title: row.title,
-        price: row.price,
         gender: row.gender,
         remarks: row.remarks
       }
@@ -508,7 +449,7 @@
             this.$message.error('操作失败')
           }
         })
-      })
+      }).catch(error=>{})
     },
     handleEnable ({id}) {
       this.$confirm('确定要启用吗?', '提示', {
@@ -527,12 +468,12 @@
             this.$message.error('操作失败')
           }
         })
-      })
+      }).catch(error=>{})
     },
     effectDialogShow(row){
       this.dialogVisibleListEffect = true
-      this.job = row
-      this.paramsEffect.jobId=row.id
+      this.couple = row
+      this.paramsEffect.coupleId=row.id
       this.fetchDataEffect()
 
 
@@ -580,7 +521,7 @@
       }
       this.idEffect=null
       this.formEffect = {
-        jobId:this.job.id,
+        coupleId:this.couple.id,
         operation:null,
         attrKey:null,
         value:null
@@ -618,7 +559,7 @@
         this.$refs.formEffect.resetFields()
       }
       this.formEffect = {
-        jobId:row.jobId.id,
+        coupleId:row.coupleId.id,
         operation:row.operation,
         attrKey:row.attrKey,
         value:row.value
@@ -669,12 +610,12 @@
             this.$message.error('操作失败')
           }
         })
-      })
+      }).catch(error=>{})
     },
     requireDialogShow(row){
       this.dialogVisibleListRequire = true
-      this.job = row
-      this.paramsRequire.jobId=row.id
+      this.couple = row
+      this.paramsRequire.coupleId=row.id
       this.fetchDataRequire()
 
 
@@ -713,7 +654,7 @@
       }
       this.idRequire=null
       this.formRequire = {
-        jobId:this.job.id,
+        coupleId:this.couple.id,
         attrKey:null,
         value:null
       }
@@ -750,7 +691,7 @@
         this.$refs.formRequire.resetFields()
       }
       this.formRequire = {
-        jobId:row.jobId.id,
+        coupleId:row.coupleId.id,
         attrKey:row.attrKey,
         value:row.value
       }
@@ -800,7 +741,7 @@
             this.$message.error('操作失败')
           }
         })
-      })
+      }).catch(error=>{})
     }
   }
 }

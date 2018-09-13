@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import {postRequest} from '@/utils/request'
-const module='job'
+const module='house'
 
 export const getList = (params) => {
   return request({
@@ -22,7 +22,6 @@ export const enable = (data) => {
 export const disable = (data) => {
   return postRequest( `/${module}/disable`,data)
 }
-
 export const effectList = (params) => {
   return request({
     url: `/${module}/effectList`,
@@ -57,8 +56,6 @@ export const editRequire = (data) => {
 export const deleteRequire = (data) => {
   return postRequest( `/${module}/deleteRequire`,data)
 }
-
-
 export  const getOperation=()=>{
   return request({
     url: `/common/getOperation`,

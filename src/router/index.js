@@ -38,23 +38,52 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    path: '/manage',
     component: Layout,
-    redirect: '/example/table',
+    redirect: '/manage/job',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: 'Manage', icon: 'example' },
     children: [
       {
         path: 'job',
         name: 'Job',
-        component: () => import('@/views/job/index'),
+        component: () => import('@/views/manage/job/index'),
         meta: { title: 'Job', icon: 'table' }
+      },{
+        path: 'couple',
+        name: 'Couple',
+        component: () => import('@/views/manage/couple/index'),
+        meta: { title: 'Couple', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
+        path: 'plan',
+        name: 'Plan',
+        component: () => import('@/views/manage/plan/index'),
+        meta: { title: 'Plan', icon: 'tree' }
+      },
+      {
+        path: 'car',
+        name: 'Car',
+        component: () => import('@/views/manage/car/index'),
+        meta: { title: 'Car', icon: 'table' }
+      },
+      {
+        path: 'house',
+        name: 'House',
+        component: () => import('@/views/manage/house/index'),
+        meta: { title: 'House', icon: 'tree' }
+      },
+      {
+        path: 'clothes',
+        name: 'Clothes',
+        component: () => import('@/views/manage/clothes/index'),
+        meta: { title: 'Clothes', icon: 'table' }
+      },
+      {
+        path: 'luxury',
+        name: 'Luxury',
+        component: () => import('@/views/manage/luxury/index'),
+        meta: { title: 'Luxury', icon: 'tree' }
       }
     ]
   },

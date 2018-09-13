@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import {postRequest} from '@/utils/request'
-const module='job'
+const module='plan'
 
 export const getList = (params) => {
   return request({
@@ -21,6 +21,12 @@ export const enable = (data) => {
 }
 export const disable = (data) => {
   return postRequest( `/${module}/disable`,data)
+}
+export const up = (data) => {
+  return postRequest( `/${module}/up`,data)
+}
+export const down = (data) => {
+  return postRequest( `/${module}/down`,data)
 }
 
 export const effectList = (params) => {
