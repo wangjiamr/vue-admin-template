@@ -23,6 +23,17 @@ export const eventList=(params,module)=>{
     params
   })
 }
+export const list=(params)=>{
+  return request({
+    url: `/${module}/list`,
+    method: 'get',
+    params
+  })
+}
+export const add=(data)=>{
+  return postRequest( `/${module}/add`,data)
+}
+
 export const addResult=(data)=>{
   return postRequest( `/${module}/addResult`,data)
 }
@@ -50,6 +61,14 @@ export const editEffect=(data)=>{
 export const deleteEffect=(data)=>{
   return postRequest( `/${module}/deleteEffect`,data)
 }
+export const setRequire=(data)=>{
+  return postRequest( `/${module}/setRequire`,data)
+}
+export const clearRequire=(data)=>{
+  return postRequest( `/${module}/clearRequire`,data)
+}
+
+
 export  const getOperation=()=>{
   return request({
     url: `/common/getOperation`,
@@ -59,6 +78,18 @@ export  const getOperation=()=>{
 export const getAttr=(type)=>{
   return request({
     url: `common/getAttr/${type}`,
+    method: 'get'
+  })
+}
+export const getCompare=()=>{
+  return request({
+    url: `common/getCompare`,
+    method: 'get'
+  })
+}
+export const getEventSource=(type)=>{
+  return request({
+    url: `common/getEventSource/${type}`,
     method: 'get'
   })
 }

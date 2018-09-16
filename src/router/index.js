@@ -91,6 +91,18 @@ export const constantRouterMap = [
         name: 'Luxury',
         component: () => import('@/views/manage/luxury/index'),
         meta: { title: 'Luxury', icon: 'tree' }
+      },
+      {
+        path: 'femaleEvent',
+        name: 'FemaleEvent',
+        component: () => import('@/views/manage/event/female'),
+        meta: { title: 'FemaleEvent', icon: 'eye' }
+      },
+      {
+        path: 'maleEvent',
+        name: 'MaleEvent',
+        component: () => import('@/views/manage/event/male'),
+        meta: { title: 'MaleEvent', icon: 'eye' }
       }
     ]
   },

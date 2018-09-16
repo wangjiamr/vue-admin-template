@@ -3,6 +3,19 @@
        element-loading-text="loading..."
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.8)">
+    <el-button type="info" style="margin-bottom: 20px;" @click="dialogShow">New</el-button>
+    <div class="search_input">
+      <el-input placeholder="Enter keywords to search" v-model="paramsEvent.keyword" class="input-with-select" @keyup.enter.native="query">
+        <el-select v-model="paramsEvent.source" slot="prepend" placeholder="Select" style="width: 140px;" @change="query">
+          <el-option v-for="item in eventSourceList"
+                  :key="item.value"
+                  :label="item.text"
+                  :value="item.value"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search" @click="query"></el-button>
+      </el-input>
+    </div>
+
     <el-table  v-loading="listLoadingEvent" :data="listEvent"  element-loading-text="Loading"  border  stripe  fit  highlight-current-row>
 
       <el-table-column type="expand">
@@ -69,24 +82,24 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column :label="fragment" width="180">
+      <el-table-column label="source" width="180">
         <template slot-scope="scope">
-          {{ scope.row[fragment].title }}
+          {{ getSourceMapping(eventSourceList,scope.row.source) }}
         </template>
       </el-table-column>
       <el-table-column label="content">
         <template slot-scope="scope">
-          {{ scope.row.eventId.content}}
+          {{ scope.row.content}}
         </template>
       </el-table-column>
       <el-table-column label="operate">
         <template slot-scope="scope">
           <el-button size="mini" @click="editShowEvent( scope.row)">Edit</el-button>
           <el-button size="mini" type="danger" @click="handleDisableEvent(scope.row)"
-                     v-if="scope.row.eventId.useYn==='Y'">Disabled
+                     v-if="scope.row.useYn==='Y'">Disabled
           </el-button>
           <el-button size="mini" type="warning" @click="handleEnableEvent(scope.row)"
-                     v-if="scope.row.eventId.useYn!=='Y'">Enable
+                     v-if="scope.row.useYn!=='Y'">Enable
           </el-button>
           <el-button size="mini" type="info" @click="addResultShow(scope.row)">Add result</el-button>
         </template>
@@ -94,15 +107,26 @@
     </el-table>
 
 
-    <!--edit event-->
+    <!--event-->
     <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="30%">
       <el-form label-width="80px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
+        <el-form-item label="source:" prop="source">
+          <el-select v-model="formEvent.source">
+            <el-option v-for="item in eventSourceList"
+                    :key="item.value"
+                    :label="item.text"
+                    :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="content:" prop="content">
           <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model.number="formEvent.content"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleEditEvent" >修改</el-button>
+        <el-button type="primary" @click="handleEditEvent" v-if="formEvent.id">修改</el-button>
+        <el-button type="primary" @click="handleAddEvent" v-if="!formEvent.id">添加</el-button>
+
         <el-button @click="dialogVisibleInputEvent=false">取 消</el-button>
       </div>
     </el-dialog>
@@ -196,7 +220,7 @@
 </template>
 
 <script>
-  import {editEvent, enableEvent, disableEvent, eventList, getOperation, getAttr,getCompare} from '@/api/event'
+  import {editEvent, enableEvent, disableEvent, list, getOperation, getAttr,getCompare,getEventSource,add} from '@/api/event'
   import {addResult, editResult, enableResult, disableResult, upResult, downResult} from '@/api/event'
   import {addEffect, editEffect, deleteEffect,clearRequire,setRequire} from '@/api/event'
 
@@ -204,22 +228,28 @@
     name: "event",
     data () {
       return {
-        gender:this.$route.params.gender,
-        type:this.$route.params.type,
-        id:this.$route.params.id,
+        gender:1,
         dialogVisibleInputEvent: false,
         dialogVisibleListEvent: false,
         listLoadingEvent: false,
         listEvent: null,
         paramsEvent: {
           start: 0,
-          limit: 10
+          limit: 10,
+          source:'PLAN',
+          gender:null,
+          keyword:null
         },
         formEvent: {
           content: null,
+          source:null,
+          add:null,
           id: null
         },
         ruleEvent: {
+          source: [
+            {required: true, message: 'Required field,please select ', trigger: 'blur'}
+          ],
           content: [
             {required: true, message: 'Required field,please entry ', trigger: 'blur'}
           ]
@@ -281,10 +311,22 @@
             {required: true, message: 'Required field,please entry ', trigger: 'blur'},
             {type: 'number', message: 'Muset be number'}
           ]
-        }
+        },
+        eventSourceList:[]
       }
     },
     methods: {
+      getSourceMapping(array,value){
+        if(this.eventSourceList.length){
+          const item=this.eventSourceList.find((i)=>{
+            return i.value===value
+          })
+          if(item){
+            return item.text
+          }
+        }
+        return value
+      },
       getRequire(array,row){
        return this.getAttrMapping(array,row.attrKey)+' '+row.compare +' '+row.value
       },
@@ -310,15 +352,50 @@
         }
         return value
       },
+      query(){
+        this.paramsEvent.start = 0
+        this.fetchDataEvent()
+      },
       fetchDataEvent () {
+        this.paramsEvent.gender=this.gender
         this.listLoadingEvent = true
-        const idObj={}
-        idObj[this.fragment]=this.$route.params.id
-        eventList(Object.assign(this.paramsEvent,idObj),this.type).then(({data}) => {
+        list(this.paramsEvent).then(({data}) => {
           if (data['errorCode'] === 0) {
             this.listEvent = data['list']
           }
           this.listLoadingEvent = false
+        })
+      },
+      dialogShow(){
+        if (this.$refs.formEvent) {
+          this.$refs.formEvent.resetFields()
+        }
+        this.formEvent = {
+          content: null,
+          source:null,
+          gender: this.gender,
+          id: null
+        }
+        this.dialogVisibleInputEvent = true
+      },
+      handleAddEvent(){
+        this.$refs.formEvent.validate((valid) => {
+          if (valid) {
+            this.dialogVisibleInputEvent = false
+            add(this.formEvent).then(({data}) => {
+              if (data['errorCode'] === 0) {
+                this.$message({
+                  message: '保存成功',
+                  type: 'success'
+                })
+                this.fetchDataEvent()
+              } else {
+                this.$message.error('保存失败')
+              }
+            })
+          } else {
+            return false
+          }
         })
       },
       editShowEvent (row) {
@@ -326,8 +403,9 @@
           this.$refs.formEvent.resetFields()
         }
         this.formEvent = {
-          content: row.eventId.content,
-          id: row.eventId.id
+          content: row.content,
+          source:row.source,
+          id: row.id
         }
         this.dialogVisibleInputEvent = true
       },
@@ -357,7 +435,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          disableEvent({id:row.eventId.id}).then(({data}) => {
+          disableEvent({id:row.id}).then(({data}) => {
             if (data['errorCode'] === 0) {
               this.$message({
                 message: '操作成功',
@@ -377,7 +455,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          enableEvent({id:row.eventId.id}).then(({data}) => {
+          enableEvent({id:row.id}).then(({data}) => {
             if (data['errorCode'] === 0) {
               this.$message({
                 message: '操作成功',
@@ -396,7 +474,7 @@
           this.$refs.formEvent.resetFields()
         }
         this.formResult = {
-          eventId: row.eventId.id,
+          eventId: row.id,
           resultText: null,
           content: null,
           id: null
@@ -685,9 +763,6 @@
         })
       },
       init(){
-        if(!this.type || !this.id || !this.gender){
-          this.$router.push('/404')
-        }
         //attr
         if(!this.attrKeys|| !this.attrKeys.length){
           getAttr(this.gender).then(({data}) => {
@@ -710,6 +785,15 @@
           getCompare().then(({data}) => {
             if (data['errorCode'] === 0) {
               this.compareList = data['list']
+            }
+          })
+        }
+
+        //eventSourceList
+        if(!this.eventSourceList.length){
+          getEventSource(this.gender).then(({data})=>{
+            if (data['errorCode'] === 0) {
+              this.eventSourceList = data['list']
             }
           })
         }
