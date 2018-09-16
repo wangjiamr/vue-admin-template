@@ -45,6 +45,13 @@ export const constantRouterMap = [
     meta: { title: 'Manage', icon: 'example' },
     children: [
       {
+        path: 'event/:type/:id/:gender',
+        name: 'Event',
+        component: () => import('@/views/manage/event'),
+        meta: { title: 'Event List', icon: 'tree' },
+        hidden:true
+      },
+      {
         path: 'job',
         name: 'Job',
         component: () => import('@/views/manage/job/index'),
@@ -92,7 +99,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-   mode: 'history', //后端支持可开
+  // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

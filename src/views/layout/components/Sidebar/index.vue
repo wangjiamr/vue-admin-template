@@ -2,7 +2,7 @@
   <el-scrollbar wrap-class="scrollbar-wrapper">
     <el-menu
       :show-timeout="200"
-      :default-active="$route.path"
+      :default-active="select"
       :collapse="isCollapse"
       mode="vertical"
       background-color="#304156"
@@ -29,6 +29,14 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    },
+    select(){//nest page
+      if(this.$route.params.type && this.$route.params.id){
+          return '/manage/'+this.$route.params.type
+      }else{
+        return this.$route.path
+      }
+
     }
   }
 }

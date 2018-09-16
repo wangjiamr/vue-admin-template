@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import {postRequest} from '@/utils/request'
-const module='job'
+export const module='job'
 
 export const getList = (params) => {
   return request({
@@ -69,5 +69,17 @@ export const getAttr=(type)=>{
   return request({
     url: `common/getAttr/${type}`,
     method: 'get'
+  })
+}
+
+
+export  const addEvent=(data)=>{
+  return postRequest( `/${module}/addEvent`,data)
+}
+export const eventList = (params) => {
+  return request({
+    url: `/${module}/eventList`,
+    method: 'get',
+    params
   })
 }

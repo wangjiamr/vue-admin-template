@@ -10,7 +10,7 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="Title" width="180">
+      <el-table-column label="Title" width="120">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
@@ -38,6 +38,8 @@
           <el-button size="mini" type="danger"   @click="handleDisable(scope.row)" v-if="scope.row.useYn==='Y'">Disabled </el-button>
           <el-button size="mini" type="warning"  @click="handleEnable(scope.row)" v-if="scope.row.useYn!=='Y'" >Enable </el-button>
           <el-button size="mini" type="info"     @click="effectDialogShow(scope.row)">Effect</el-button>
+          <el-button size="mini" type="info"     @click="eventDialogShow(scope.row)">New Event</el-button>
+          <el-button size="mini" type="info"     @click="eventView(scope.row)">View Event</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -150,13 +152,27 @@
         <el-button @click="dialogVisibleInputEffect=false">取 消</el-button>
       </div>
     </el-dialog>
+
+
+    <!---event-->
+    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="30%">
+      <el-form label-width="80px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
+        <el-form-item label="content:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  v-model.number="formEvent.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFormEvent">确定</el-button>
+        <el-button @click="dialogVisibleInputEvent=false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import {getList, add, edit, enable, disable,up,down,getOperation,getAttr} from '@/api/plan'
   import {effectList,addEffect,editEffect,deleteEffect} from '@/api/plan'
-
+  import {addEvent,eventList,module} from'@/api/plan'
 
   export default {
   filters: {
@@ -228,6 +244,17 @@
         value: [
           {required: true, message: 'Required field,please entry ', trigger: 'blur'},
           {type: 'number', message: 'Muset be number'}
+        ]
+      },
+      dialogVisibleInputEvent:false,
+      formEvent:{
+        planId:null,
+        content:null,
+        id:null
+      },
+      ruleEvent:{
+        content: [
+          {required: true, message: 'Required field,please entry ', trigger: 'blur'}
         ]
       }
     }
@@ -587,6 +614,40 @@
           }
         })
       }).catch(error=>{})
+    },
+    eventDialogShow({id}){
+      if (this.$refs.formEvent) {
+        this.$refs.formEvent.resetFields()
+      }
+      this.formEvent = {
+        planId:id,
+        content:null,
+        id:null
+      }
+      this.dialogVisibleInputEvent = true
+    },
+    submitFormEvent(){
+      this.$refs.formEvent.validate((valid) => {
+        if (valid) {
+          this.dialogVisibleInputEvent = false
+          addEvent(this.formEvent).then(({data}) => {
+            if (data['errorCode'] === 0) {
+              this.$message({
+                message: '添加成功',
+                type: 'success'
+              })
+              //this.fetchDataEvent()
+            } else {
+              this.$message.error('添加失败')
+            }
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    eventView(row){
+      this.$router.push(`/manage/event/${module}/${row.id}/${row.gender}`)
     }
   }
 }

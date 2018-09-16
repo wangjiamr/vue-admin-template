@@ -25,3 +25,14 @@ export function logout() {
     method: 'post'
   })
 }
+
+export  const addEvent=(data)=>{
+  return postRequest( `/${module}/addEvent`,data)
+}
+export const eventList = (params) => {
+  return request({
+    url: `/${module}/eventList`,
+    method: 'get',
+    params
+  })
+}
