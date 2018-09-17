@@ -55,7 +55,7 @@ export const constantRouterMap = [
         path: 'job',
         name: 'Job',
         component: () => import('@/views/manage/job/index'),
-        meta: { title: 'Job', icon: 'table' }
+        meta: { title: '工作岗位', icon: 'table' }
       },{
         path: 'couple',
         name: 'Couple',
