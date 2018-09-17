@@ -35,35 +35,35 @@
                 </el-table>
               </template>
             </el-table-column>
-            <el-table-column label="resultText"  width="120">
+            <el-table-column label="事件选项"  width="120">
               <template slot-scope="scope">
                 {{ scope.row.resultText}}
               </template>
             </el-table-column>
-            <el-table-column label="content" width="170">
+            <el-table-column label="事件结果描述" width="250">
               <template slot-scope="scope">
                 {{ scope.row.content}}
               </template>
             </el-table-column>
-            <el-table-column label="require" width="100">
+            <el-table-column label="限制" width="120">
               <template slot-scope="scope">
                 {{ getRequire(compareList,scope.row)}}
               </template>
             </el-table-column>
             <el-table-column label="operate">
               <template slot-scope="scope">
-                <el-button size="mini" @click="editShowResult( scope.row)">Edit</el-button>
+                <el-button size="mini" @click="editShowResult( scope.row)">编辑</el-button>
                 <el-button size="mini" type="danger" @click="handleDisableResult(scope.row)"
-                           v-if="scope.row.useYn==='Y'">Disabled
+                           v-if="scope.row.useYn==='Y'">禁用
                 </el-button>
                 <el-button size="mini" type="warning" @click="handleEnableResult(scope.row)"
-                           v-if="scope.row.useYn!=='Y'">Enable
+                           v-if="scope.row.useYn!=='Y'">启用
                 </el-button>
-                <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">Up </el-button>
-                <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">Down </el-button>
-                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">Add Effect</el-button>
-                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">Set Require</el-button>
-                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">Clear Require</el-button>
+                <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">上移 </el-button>
+                <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">下移 </el-button>
+                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">添加增益</el-button>
+                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">设置限制</el-button>
+                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -74,31 +74,31 @@
           {{ scope.row[fragment].title }}
         </template>
       </el-table-column>
-      <el-table-column label="content">
+      <el-table-column label="事件内容">
         <template slot-scope="scope">
           {{ scope.row.eventId.content}}
         </template>
       </el-table-column>
       <el-table-column label="operate">
         <template slot-scope="scope">
-          <el-button size="mini" @click="editShowEvent( scope.row)">Edit</el-button>
+          <el-button size="mini" @click="editShowEvent( scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDisableEvent(scope.row)"
-                     v-if="scope.row.eventId.useYn==='Y'">Disabled
+                     v-if="scope.row.eventId.useYn==='Y'">禁用
           </el-button>
           <el-button size="mini" type="warning" @click="handleEnableEvent(scope.row)"
-                     v-if="scope.row.eventId.useYn!=='Y'">Enable
+                     v-if="scope.row.eventId.useYn!=='Y'">启用
           </el-button>
-          <el-button size="mini" type="info" @click="addResultShow(scope.row)">Add result</el-button>
+          <el-button size="mini" type="info" @click="addResultShow(scope.row)">添加事件选项</el-button>
         </template>
       </el-table-column>
     </el-table>
 
 
     <!--edit event-->
-    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="30%">
-      <el-form label-width="80px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
-        <el-form-item label="content:" prop="content">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model.number="formEvent.content"></el-input>
+    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
+      <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
+        <el-form-item label="事件内容:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model.number="formEvent.content"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
