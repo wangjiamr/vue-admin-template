@@ -244,7 +244,7 @@
         },
         dialogVisibleInputEvent:false,
         formEvent:{
-          planId:null,
+          carId:null,
           content:null,
           id:null
         },
@@ -568,7 +568,7 @@
           this.$refs.formEvent.resetFields()
         }
         this.formEvent = {
-          planId:id,
+          carId:id,
           content:null,
           id:null
         }

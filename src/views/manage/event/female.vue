@@ -378,6 +378,36 @@
         }
         this.dialogVisibleInputEvent = true
       },
+      resetItemResult(data,resultId){
+        try {
+          let _eventId = null
+          const result_id = this.formResult.id || this.formRequire.resultId || resultId
+
+          if (result_id) {
+            const obj = this.listEvent.find(i => {
+              const result = i.resultList.find(o => {
+                return o.id === result_id
+              })
+              if (result) {
+                return true
+              }
+            })
+            if (obj) {
+              _eventId = obj.id
+            }
+          }
+          const eventId = this.formResult.eventId || _eventId
+          if (eventId && this.listEvent && this.listEvent.length > 0) {
+            this.listEvent.forEach((i) => {
+              if (i.id === eventId) {
+                i.resultList = data['resultList']
+                throw new Error('break each')
+              }
+            })
+          }
+        } catch (e) {
+        }
+      },
       handleAddEvent(){
         this.$refs.formEvent.validate((valid) => {
           if (valid) {
@@ -470,8 +500,8 @@
         })
       },
       addResultShow(row){
-        if (this.$refs.formEvent) {
-          this.$refs.formEvent.resetFields()
+        if (this.$refs.formResult) {
+          this.$refs.formResult.resetFields()
         }
         this.formResult = {
           eventId: row.id,
@@ -491,7 +521,7 @@
                   message: '保存成功',
                   type: 'success'
                 })
-                this.fetchDataEvent()
+                this.resetItemResult(data)
               } else {
                 this.$message.error('保存失败')
               }
@@ -502,8 +532,8 @@
         })
       },
       editShowResult(row){
-        if (this.$refs.formEvent) {
-          this.$refs.formEvent.resetFields()
+        if (this.$refs.formResult) {
+          this.$refs.formResult.resetFields()
         }
         this.formResult = {
           eventId: null,
@@ -523,7 +553,7 @@
                   message: '保存成功',
                   type: 'success'
                 })
-                this.fetchDataEvent()
+                this.resetItemResult(data)
               } else {
                 this.$message.error('保存失败')
               }
@@ -545,7 +575,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemResult(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -565,7 +595,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemResult(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -585,7 +615,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemResult(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -604,7 +634,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemResult(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -631,6 +661,37 @@
           })
         }
       },
+      resetItemEffectList(data,effectId){
+        try {
+          let _resultId = null
+          const effect_Id = this.formEffect.id || effectId
+          if (effect_Id) {
+            this.listEvent.forEach(i => {
+              i.resultList.forEach(o => {
+                o.effectList.forEach(u => {
+                  if (u.id === effect_Id) {
+                    o['effectList'] = data['effectList']
+                    throw new Error('break effectList forEach')
+                  }
+                })
+              })
+            })
+          } else {
+            const resultId = this.formEffect.resultId || _resultId
+            if (resultId && this.listEvent && this.listEvent.length > 0) {
+              this.listEvent.forEach(i => {
+                i.resultList.forEach(o => {
+                  if (o.id === resultId) {
+                    o['effectList'] = data['effectList']
+                    throw new Error('break resultList  forEach')
+                  }
+                })
+              })
+            }
+          }
+        } catch (e) {
+        }
+      },
       submitFormEffect () {
         this.$refs.formEffect.validate((valid) => {
           if (valid) {
@@ -641,7 +702,7 @@
                   message: '保存成功',
                   type: 'success'
                 })
-                this.fetchDataEvent()
+                this.resetItemEffectList(data)
               } else {
                 this.$message.error('保存失败')
               }
@@ -682,7 +743,7 @@
                   message: '保存成功',
                   type: 'success'
                 })
-                this.fetchDataEvent()
+                this.resetItemEffectList(data)
               } else {
                 this.$message.error('保存失败')
               }
@@ -704,7 +765,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemEffectList(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -735,7 +796,7 @@
                 message: '操作成功',
                 type: 'success'
               })
-              this.fetchDataEvent()
+              this.resetItemResult(data,id)
             } else {
               this.$message.error('操作失败')
             }
@@ -752,7 +813,7 @@
                   message: '保存成功',
                   type: 'success'
                 })
-                this.fetchDataEvent()
+                this.resetItemResult(data)
               } else {
                 this.$message.error('保存失败')
               }
