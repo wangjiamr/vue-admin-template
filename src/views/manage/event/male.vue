@@ -63,7 +63,7 @@
                 {{ getRequire(compareList,scope.row)}}
               </template>
             </el-table-column>
-            <el-table-column label="operate">
+            <el-table-column label="operate" width="245">
               <template slot-scope="scope">
                 <el-button size="mini" @click="editShowResult( scope.row)">Edit</el-button>
                 <el-button size="mini" type="danger" @click="handleDisableResult(scope.row)"
@@ -72,11 +72,14 @@
                 <el-button size="mini" type="warning" @click="handleEnableResult(scope.row)"
                            v-if="scope.row.useYn!=='Y'">Enable
                 </el-button>
-                <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">Up </el-button>
-                <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">Down </el-button>
-                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">Add Effect</el-button>
-                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">Set Require</el-button>
-                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">Clear Require</el-button>
+                <el-popover  placement="top"   trigger="hover">
+                  <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">Up </el-button>
+                  <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">Down </el-button>
+                  <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">Add Effect</el-button>
+                  <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">Set Require</el-button>
+                  <el-button size="mini" type="danger" @click="clearRequire(scope.row)">Clear Require</el-button>
+                  <el-tag type="info" size="medium" slot="reference">更多操作</el-tag>
+                </el-popover>
               </template>
             </el-table-column>
           </el-table>

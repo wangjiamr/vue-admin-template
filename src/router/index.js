@@ -42,7 +42,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/manage/job',
     name: 'Example',
-    meta: { title: 'Manage', icon: 'example' },
+    meta: { title: '管理', icon: 'example' },
     children: [
       {
         path: 'event/:type/:id/:gender',

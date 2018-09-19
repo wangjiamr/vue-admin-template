@@ -26,7 +26,7 @@
                       {{ scope.row.value}}
                     </template>
                   </el-table-column>
-                  <el-table-column label="操作">
+                  <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">编辑 </el-button>
                       <el-button size="mini" type="danger" @click="deleteEffect(scope.row)">删除 </el-button>
@@ -50,7 +50,7 @@
                 {{ getRequire(compareList,scope.row)}}
               </template>
             </el-table-column>
-            <el-table-column label="operate">
+            <el-table-column label="operate" width="235">
               <template slot-scope="scope">
                 <el-button size="mini" @click="editShowResult( scope.row)">编辑</el-button>
                 <el-button size="mini" type="danger" @click="handleDisableResult(scope.row)"
@@ -59,11 +59,14 @@
                 <el-button size="mini" type="warning" @click="handleEnableResult(scope.row)"
                            v-if="scope.row.useYn!=='Y'">启用
                 </el-button>
-                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">增益</el-button>
-                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">限制</el-button>
-                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
-                <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">上移 </el-button>
-                <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">下移 </el-button>
+                <el-popover  placement="top"   trigger="hover">
+                  <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">增益</el-button>
+                  <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">限制</el-button>
+                  <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
+                  <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">上移 </el-button>
+                  <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">下移 </el-button>
+                  <el-tag type="info" size="medium" slot="reference">更多操作</el-tag>
+                </el-popover>
               </template>
             </el-table-column>
           </el-table>
@@ -79,7 +82,7 @@
           {{ scope.row.eventId.content}}
         </template>
       </el-table-column>
-      <el-table-column label="operate">
+      <el-table-column label="operate" width="280">
         <template slot-scope="scope">
           <el-button size="mini" @click="editShowEvent( scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDisableEvent(scope.row)"

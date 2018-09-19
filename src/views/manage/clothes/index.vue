@@ -25,19 +25,22 @@
           {{ scope.row.sellPrice }}
         </template>
       </el-table-column>
-      <el-table-column label="备注" width="400">
+      <el-table-column label="备注">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作"  width="235">
         <template slot-scope="scope">
           <el-button size="mini"  @click="editShow( scope.row)">编辑 </el-button>
           <el-button size="mini" type="danger"   @click="handleDisable(scope.row)" v-if="scope.row.useYn==='Y'">禁用 </el-button>
           <el-button size="mini" type="warning"  @click="handleEnable(scope.row)" v-if="scope.row.useYn!=='Y'" >启用 </el-button>
-          <el-button size="mini" type="info"     @click="effectDialogShow(scope.row)">增益</el-button>
-          <!--<el-button size="mini" type="info"     @click="eventDialogShow(scope.row)">新建事件</el-button>-->
-          <!--<el-button size="mini" type="info"     @click="eventView(scope.row)">查看事件</el-button>-->
+          <el-popover  placement="top"   trigger="hover">
+            <el-button size="mini" type="info"     @click="effectDialogShow(scope.row)">增益</el-button>
+            <!--<el-button size="mini" type="info"     @click="eventDialogShow(scope.row)">新建事件</el-button>-->
+            <!--<el-button size="mini" type="info"     @click="eventView(scope.row)">查看事件</el-button>-->
+            <el-tag type="success" size="medium" slot="reference" style="margin-left: 10px">更多操作</el-tag>
+          </el-popover>
         </template>
       </el-table-column>
     </el-table>
