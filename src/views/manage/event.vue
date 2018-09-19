@@ -11,25 +11,25 @@
             <el-table-column type="expand">
               <template slot-scope="result">
                 <el-table :data="result.row.effectList">
-                  <el-table-column label="operation" width="90">
+                  <el-table-column label="效果" width="90">
                     <template slot-scope="scope">
                       <span>{{getOperationMapping(operations,scope.row.operation)}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="attrKey" width="100">
+                  <el-table-column label="影响属性" width="100">
                     <template slot-scope="scope">
                       {{ getAttrMapping(attrKeys,scope.row.attrKey)}}
                     </template>
                   </el-table-column>
-                  <el-table-column label="value" width="100">
+                  <el-table-column label="影响值" width="100">
                     <template slot-scope="scope">
                       {{ scope.row.value}}
                     </template>
                   </el-table-column>
-                  <el-table-column label="operate">
+                  <el-table-column label="操作">
                     <template slot-scope="scope">
-                      <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">Edit </el-button>
-                      <el-button size="mini" type="danger" @click="deleteEffect(scope.row)">Del </el-button>
+                      <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">编辑 </el-button>
+                      <el-button size="mini" type="danger" @click="deleteEffect(scope.row)">删除 </el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -59,11 +59,11 @@
                 <el-button size="mini" type="warning" @click="handleEnableResult(scope.row)"
                            v-if="scope.row.useYn!=='Y'">启用
                 </el-button>
+                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">增益</el-button>
+                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">限制</el-button>
+                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
                 <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">上移 </el-button>
                 <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">下移 </el-button>
-                <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">添加增益</el-button>
-                <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">设置限制</el-button>
-                <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
               </template>
             </el-table-column>
           </el-table>

@@ -3,7 +3,7 @@
        element-loading-text="loading..."
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.8)">
-    <el-button type="info" style="margin-bottom: 20px;" @click="dialogShow">新建岗位</el-button>
+    <el-button type="info" style="margin-bottom: 20px;" @click="dialogShow">新建</el-button>
     <div class="search_input">
       <el-input placeholder="Enter keywords to search" v-model="params.keyword" class="input-with-select" @keyup.enter.native="query">
         <el-button slot="append" icon="el-icon-search" @click="query"></el-button>
@@ -35,8 +35,8 @@
           <el-button size="mini"  @click="editShow( scope.row)">编辑 </el-button>
           <el-button size="mini" type="danger" @click="handleDisable(scope.row)" v-if="scope.row.useYn==='Y'">禁用 </el-button>
           <el-button size="mini" type="warning"  @click="handleEnable(scope.row)" v-if="scope.row.useYn!=='Y'" >启用 </el-button>
-          <el-button size="mini" type="info"  @click="effectDialogShow(scope.row)">岗位增益</el-button>
-          <el-button size="mini" type="info" @click="requireDialogShow(scope.row)">岗位要求</el-button>
+          <el-button size="mini" type="info"  @click="effectDialogShow(scope.row)">增益</el-button>
+          <el-button size="mini" type="info" @click="requireDialogShow(scope.row)">要求</el-button>
           <el-button size="mini" type="info"     @click="eventDialogShow(scope.row)">新建事件</el-button>
           <el-button size="mini" type="info"     @click="eventView(scope.row)">查看事件</el-button>
         </template>
@@ -52,7 +52,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="pageObj.totalRecord">
     </el-pagination>
-    <el-dialog :title='id?"Edit Job":"新建岗位"' :visible.sync="dialogVisible" width="30%" close="resetForm">
+    <el-dialog :title='id?"编辑":"新建"' :visible.sync="dialogVisible" width="30%" close="resetForm">
       <el-form label-width="100px" :model="form" :rules="rules" ref="form">
         <el-form-item label="工作岗位:" prop="title">
           <el-input type="text" v-model="form.title"></el-input>
@@ -72,7 +72,7 @@
         </el-form-item>
 
         <el-form-item label="备注">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="form.remarks"></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.remarks"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -115,7 +115,7 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :title='idEffect?"Edit Effect":"New Effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
+    <el-dialog :title='idEffect?"编辑":"新建"' :visible.sync="dialogVisibleInputEffect" width="30%">
       <el-form label-width="100px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
         <el-form-item label="效果:" prop="operation">
           <el-select v-model="formEffect.operation">
@@ -149,7 +149,7 @@
     </el-dialog>
 
     <!--required-->
-    <el-dialog :title='job?job.title+"  岗位要求列表":""' :visible.sync="dialogVisibleListRequire" width="50%">
+    <el-dialog :title='job?job.title+"  要求列表":""' :visible.sync="dialogVisibleListRequire" width="50%">
       <el-button type="info" style="margin-bottom: 20px;" @click="dialogShowRequire">New</el-button>
       <el-table v-loading="listLoadingRequire" :data="listRequire" element-loading-text="Loading" border  stripe  fit highlight-current-row>
         <el-table-column label="工作岗位" width="180">
@@ -175,7 +175,7 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :title='idRequire?"Edit Require":"New Require"' :visible.sync="dialogVisibleInputRequire" width="30%">
+    <el-dialog :title='idRequire?"编辑":"新建"' :visible.sync="dialogVisibleInputRequire" width="30%">
       <el-form label-width="100px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
         <el-form-item label="要求属性:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
@@ -199,7 +199,7 @@
     </el-dialog>
 
     <!---event-->
-    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
+    <el-dialog :title='formEvent.id?"编辑":"新建"' :visible.sync="dialogVisibleInputEvent" width="50%">
       <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
         <el-form-item label="事件内容:" prop="content">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}"  v-model.number="formEvent.content"></el-input>

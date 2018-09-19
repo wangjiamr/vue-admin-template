@@ -60,49 +60,49 @@ export const constantRouterMap = [
         path: 'couple',
         name: 'Couple',
         component: () => import('@/views/manage/couple/index'),
-        meta: { title: 'Couple', icon: 'table' }
+        meta: { title: '情侣', icon: 'table' }
       },
       {
         path: 'plan',
         name: 'Plan',
         component: () => import('@/views/manage/plan/index'),
-        meta: { title: 'Plan', icon: 'tree' }
+        meta: { title: '日常消遣', icon: 'tree' }
       },
       {
         path: 'car',
         name: 'Car',
         component: () => import('@/views/manage/car/index'),
-        meta: { title: 'Car', icon: 'table' }
+        meta: { title: '座驾', icon: 'table' }
       },
       {
         path: 'house',
         name: 'House',
         component: () => import('@/views/manage/house/index'),
-        meta: { title: 'House', icon: 'tree' }
+        meta: { title: '房屋', icon: 'tree' }
       },
       {
         path: 'clothes',
         name: 'Clothes',
         component: () => import('@/views/manage/clothes/index'),
-        meta: { title: 'Clothes', icon: 'table' }
+        meta: { title: '衣服', icon: 'table' }
       },
       {
         path: 'luxury',
         name: 'Luxury',
         component: () => import('@/views/manage/luxury/index'),
-        meta: { title: 'Luxury', icon: 'tree' }
+        meta: { title: '奢侈品', icon: 'tree' }
       },
       {
         path: 'femaleEvent',
         name: 'FemaleEvent',
         component: () => import('@/views/manage/event/female'),
-        meta: { title: 'FemaleEvent', icon: 'eye' }
+        meta: { title: '女性事件', icon: 'eye' }
       },
       {
         path: 'maleEvent',
         name: 'MaleEvent',
         component: () => import('@/views/manage/event/male'),
-        meta: { title: 'MaleEvent', icon: 'eye' }
+        meta: { title: '男性事件', icon: 'eye' }
       }
     ]
   },
