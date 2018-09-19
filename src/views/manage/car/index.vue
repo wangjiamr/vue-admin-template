@@ -10,7 +10,7 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="汽车" width="100">
+      <el-table-column label="汽车" width="170">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>

@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="性别要求" width="120">
         <template slot-scope="scope">
-          {{ scope.row.gender?'male':'female' }}
+          {{ scope.row.gender?'男':'女' }}
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -175,7 +175,7 @@
       </el-table>
     </el-dialog>
     <el-dialog :title='idRequire?"编辑":"新建"' :visible.sync="dialogVisibleInputRequire" width="30%">
-      <el-form label-width="80px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
+      <el-form label-width="100px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
         <el-form-item label="要求属性:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
             <el-option
@@ -235,7 +235,7 @@
       loading: false,
       listLoading: true,
       dialogVisible: false,
-      genders: [{label: 'male', value: 1}, {label: 'female', value: 0}],
+      genders: [{label: '男', value: 1}, {label: '女', value: 0}],
       params: {
         start: 0,
         limit: 10,
