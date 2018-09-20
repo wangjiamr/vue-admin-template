@@ -10,7 +10,7 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="奢侈品" width="100">
+      <el-table-column label="奢侈品" width="170">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
@@ -55,7 +55,7 @@
             :total="pageObj.totalRecord">
     </el-pagination>
     <el-dialog :title='id?"编辑":"新建"' :visible.sync="dialogVisible" width="30%" close="resetForm">
-      <el-form label-width="80px" :model="form" :rules="rules" ref="form">
+      <el-form label-width="100px" :model="form" :rules="rules" ref="form">
         <el-form-item label="奢侈品:" prop="title">
           <el-input type="text" v-model="form.title"></el-input>
         </el-form-item>

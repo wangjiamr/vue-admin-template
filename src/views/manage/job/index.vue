@@ -14,7 +14,7 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-    <el-table-column label="岗位名称" width="100">
+    <el-table-column label="岗位名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="性别要求" width="100">
         <template slot-scope="scope">
-          {{ scope.row.gender?'male':'female' }}
+          {{ scope.row.gender?'男':'女' }}
         </template>
       </el-table-column>
       <el-table-column label="备注">
@@ -243,7 +243,7 @@
       loading: false,
       listLoading: true,
       dialogVisible: false,
-      genders: [{label: 'male', value: 1}, {label: 'female', value: 0}],
+      genders: [{label: '男', value: 1}, {label: '女', value: 0}],
       params: {
         start: 0,
         limit: 10,

@@ -14,17 +14,17 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="日常内容" width="120">
+      <el-table-column label="日常内容" width="200">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
       </el-table-column>
       <el-table-column label="性别要求" width="90">
         <template slot-scope="scope">
-          {{ scope.row.gender?'male':'female' }}
+          {{ scope.row.gender?'男':'女' }}
         </template>
       </el-table-column>
-      <el-table-column label="显示顺序" width="110">
+      <el-table-column label="显示顺序" width="100">
         <template slot-scope="scope">
           {{ scope.row.displayOrder }}
         </template>
@@ -198,7 +198,7 @@
       loading: false,
       listLoading: true,
       dialogVisible: false,
-      genders: [{label: 'male', value: 1}, {label: 'female', value: 0}],
+      genders: [{label: '男', value: 1}, {label: '女', value: 0}],
       params: {
         start: 0,
         limit: 10,
