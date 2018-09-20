@@ -14,17 +14,17 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-    <el-table-column label="岗位名称" width="150">
+      <el-table-column label="岗位名称" width="150">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="岗位薪水" width="120">
+      <el-table-column label="岗位薪水" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.price }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="性别要求" width="100">
+      <el-table-column label="性别要求" width="80">
         <template slot-scope="scope">
           {{ scope.row.gender?'男':'女' }}
         </template>
@@ -32,6 +32,49 @@
       <el-table-column label="备注">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
+        </template>
+      </el-table-column>
+      <el-table-column label="增益" width="50">
+        <template slot-scope="scope">
+          <el-popover  placement="top"   trigger="hover">
+          <el-table  :data="scope.row.effectList"  border stripe  fit  highlight-current-row>
+            <el-table-column label="效果" width="90">
+              <template slot-scope="scope">
+                <span>{{getOperationMapping(operations,scope.row.operation)}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="影响属性" width="100">
+              <template slot-scope="scope">
+                {{ getAttrMapping(attrKeys,scope.row.attrKey)}}
+              </template>
+            </el-table-column>
+            <el-table-column label="影响值" width="100">
+              <template slot-scope="scope">
+                {{ scope.row.value}}
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-tag type="danger" size="medium" slot="reference">查看</el-tag>
+        </el-popover>
+        </template>
+      </el-table-column>
+      <el-table-column label="要求" width="50">
+        <template slot-scope="scope">
+          <el-popover  placement="top"   trigger="hover">
+            <el-table  :data="scope.row.requireList"  border stripe  fit  highlight-current-row>
+              <el-table-column label="要求属性" width="100">
+                <template slot-scope="scope">
+                  {{ getAttrMapping(attrKeys,scope.row.attrKey)}}
+                </template>
+              </el-table-column>
+              <el-table-column label="达标值" width="100">
+                <template slot-scope="scope">
+                  {{ scope.row.value}}
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-tag type="danger" size="medium" slot="reference">V</el-tag>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column label="操作"  width="235">
@@ -343,6 +386,7 @@
   },
   created() {
     this.fetchData()
+    this.init()
   },
   computed:{
     filterOperation(){
@@ -365,6 +409,14 @@
     getAttrMapping(array,value){
       if(this.attrKeys.length){
         const item=this.attrKeys.find((i)=>{
+          return i.value===value
+        })
+        if(item){
+          return item.text
+        }
+      }else{
+        const temp=this.maleAttr.concat(this.femaleAttr)
+        const item=temp.find((i)=>{
           return i.value===value
         })
         if(item){
@@ -825,6 +877,25 @@
     },
     eventView(row){
       this.$router.push(`/manage/event/${module}/${row.id}/${row.gender}`)
+    },
+    init(){
+      //operation
+      getOperation().then(({data}) => {
+        if (data['errorCode'] === 0) {
+          this.operations = data['list']
+        }
+      })
+      //attr
+      getAttr(1).then(({data}) => {
+        if (data['errorCode'] === 0) {
+          this.maleAttr = data['list']
+        }
+      })
+      getAttr(0).then(({data}) => {
+        if (data['errorCode'] === 0) {
+          this.femaleAttr = data['list']
+        }
+      })
     }
   }
 }
