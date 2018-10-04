@@ -103,6 +103,12 @@ export const constantRouterMap = [
         name: 'MaleEvent',
         component: () => import('@/views/manage/event/male'),
         meta: { title: '男性事件', icon: 'eye' }
+      },
+      {
+        path: 'luck',
+        name: 'Luck',
+        component: () => import('@/views/manage/luck/index'),
+        meta: { title: '幸运', icon: 'tree' }
       }
     ]
   },
