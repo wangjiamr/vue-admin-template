@@ -34,6 +34,11 @@
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
+      <el-table-column label="结果">
+        <template slot-scope="scope">
+          {{ scope.row.result }}
+        </template>
+      </el-table-column>
 
       <el-table-column label="增益" width="70">
         <template slot-scope="scope">
@@ -103,6 +108,9 @@
 
         <el-form-item label="备注">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.remarks"></el-input>
+        </el-form-item>
+        <el-form-item label="结果" prop="result">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.result"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -235,7 +243,8 @@
       form: {
         title: null,
         gender: null,
-        remarks: null
+        remarks: null,
+        result:null
       },
       rules: {
         title: [
@@ -243,6 +252,9 @@
         ],
         gender: [
           {required: true, message: 'Required field,please select ', trigger: 'blur'}
+        ],
+        result: [
+          {required: true, message: 'Required field,please entry ', trigger: 'blur'}
         ]
       },
       maleAttr:[],
@@ -377,7 +389,8 @@
       this.form = {
         title: null,
         gender: null,
-        remarks: null
+        remarks: null,
+        result:null
       }
       this.dialogVisible = true
     },
@@ -413,7 +426,8 @@
       this.form = {
         title: row.title,
         gender: row.gender,
-        remarks: row.remarks
+        remarks: row.remarks,
+        result:row.result
       }
       this.id=row.id
       this.dialogVisible = true
