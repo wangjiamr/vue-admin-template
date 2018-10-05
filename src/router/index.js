@@ -108,7 +108,7 @@ export const constantRouterMap = [
         path: 'luck',
         name: 'Luck',
         component: () => import('@/views/manage/luck/index'),
-        meta: { title: '幸运', icon: 'tree' }
+        meta: { title: '运气', icon: 'tree' }
       }
     ]
   },
