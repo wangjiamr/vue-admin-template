@@ -35,22 +35,22 @@
                 </el-table>
               </template>
             </el-table-column>
-            <el-table-column label="事件选项"  width="120">
+            <el-table-column label="事件选项"  width="180">
               <template slot-scope="scope">
                 {{ scope.row.resultText}}
               </template>
             </el-table-column>
-            <el-table-column label="事件结果描述" width="250">
+            <el-table-column label="事件结果描述">
               <template slot-scope="scope">
                 {{ scope.row.content}}
               </template>
             </el-table-column>
-            <el-table-column label="限制" width="120">
+            <el-table-column label="限制" width="100">
               <template slot-scope="scope">
                 {{ getRequire(compareList,scope.row)}}
               </template>
             </el-table-column>
-            <el-table-column label="操作" width="235">
+            <el-table-column label="操作" width="250">
               <template slot-scope="scope">
                 <el-button size="mini" @click="editShowResult( scope.row)">编辑</el-button>
                 <el-button size="mini" type="danger" @click="handleDisableResult(scope.row)"
@@ -82,7 +82,7 @@
           {{ scope.row.eventId.content}}
         </template>
       </el-table-column>
-      <el-table-column label="operate" width="280">
+      <el-table-column label="操作" width="280">
         <template slot-scope="scope">
           <el-button size="mini" @click="editShowEvent( scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDisableEvent(scope.row)"
@@ -111,13 +111,13 @@
     </el-dialog>
 
     <!--result-->
-    <el-dialog :title='formResult.id?"Edit Result":"New Result"' :visible.sync="dialogVisibleInputResult" width="30%">
-      <el-form label-width="80px" :model="formResult" :rules="ruleResult" ref="formResult">
-        <el-form-item label="resultText:" prop="resultText">
+    <el-dialog :title='formResult.id?"Edit Result":"New Result"' :visible.sync="dialogVisibleInputResult" width="50%">
+      <el-form label-width="100px" :model="formResult" :rules="ruleResult" ref="formResult">
+        <el-form-item label="事件选项:" prop="resultText">
           <el-input type="text" v-model.number="formResult.resultText"></el-input>
         </el-form-item>
-        <el-form-item label="content:" prop="content">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model.number="formResult.content"></el-input>
+        <el-form-item label="结果描述:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model.number="formResult.content"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -131,8 +131,8 @@
 
     <!--Effect-->
     <el-dialog :title='formEffect.id?"Edit Effect":"New Effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
-      <el-form label-width="80px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
-        <el-form-item label="operation:" prop="operation">
+      <el-form label-width="100px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
+        <el-form-item label="效果:" prop="operation">
           <el-select v-model="formEffect.operation">
             <el-option
                     v-for="item in operations"
@@ -142,7 +142,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="影响属性:" prop="attrKey">
           <el-select v-model="formEffect.attrKey">
             <el-option
                     v-for="item in filterOperation"
@@ -152,7 +152,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="影响值:" prop="value">
           <el-input type="text" v-model.number="formEffect.value"></el-input>
         </el-form-item>
       </el-form>
@@ -165,8 +165,8 @@
 
     <!--require-->
     <el-dialog :title='formRequire.id?"Edit Require":"New Require"' :visible.sync="dialogVisibleInputRequire" width="30%">
-      <el-form label-width="80px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
-        <el-form-item label="compare:" prop="compare">
+      <el-form label-width="100px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
+        <el-form-item label="限制:" prop="compare">
           <el-select v-model="formRequire.compare">
             <el-option
                     v-for="item in compareList"
@@ -176,7 +176,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="属性:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
             <el-option
                     v-for="item in attrKeys"
@@ -186,7 +186,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="值:" prop="value">
           <el-input type="text" v-model.number="formRequire.value"></el-input>
         </el-form-item>
       </el-form>
