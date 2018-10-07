@@ -14,7 +14,7 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="日常内容" width="200">
+      <el-table-column label="花费说明" width="100">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
@@ -29,7 +29,7 @@
           {{ scope.row.displayOrder }}
         </template>
       </el-table-column>
-      <el-table-column label="备注">
+      <el-table-column label="日常内容" width="200">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
         </template>
@@ -92,7 +92,7 @@
     </el-pagination>
     <el-dialog :title='id?"编辑":"新建"' :visible.sync="dialogVisible" width="30%" close="resetForm">
       <el-form label-width="100px" :model="form" :rules="rules" ref="form">
-        <el-form-item label="日常内容:" prop="title">
+        <el-form-item label="花费说明:" prop="title">
           <el-input type="text" v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="性别要求:" prop="gender">
@@ -106,8 +106,8 @@
           </el-select>
         </el-form-item>
 
-        <el-form-item label="备注">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.remarks"></el-input>
+        <el-form-item label="日常内容">
+          <el-input type="text" v-model="form.remarks"></el-input>
         </el-form-item>
         <el-form-item label="结果" prop="result">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.result"></el-input>
