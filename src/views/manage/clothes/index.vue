@@ -469,7 +469,7 @@
 
 
         if ( !this.attrKeys.length) {//female
-          getAttr(0).then(({data}) => {
+          getAttr(2).then(({data}) => {
             if (data['errorCode'] === 0) {
               this.attrKeys = data['list']
             }
@@ -623,7 +623,7 @@
         })
       },
       eventView(row){
-        this.$router.push(`/manage/event/${module}/${row.id}/0`)
+        this.$router.push(`/manage/event/${module}/${row.id}/2`)
       },
       init(){
         //operation
@@ -632,7 +632,7 @@
             this.operations = data['list']
           }
         })
-        getAttr(0).then(({data}) => {
+        getAttr(2).then(({data}) => {
           if (data['errorCode'] === 0) {
             this.attrKeys = data['list']
           }

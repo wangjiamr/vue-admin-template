@@ -231,7 +231,7 @@
     name: "event",
     data () {
       return {
-        gender:0,
+        gender:2,
         dialogVisibleInputEvent: false,
         dialogVisibleListEvent: false,
         listLoadingEvent: false,

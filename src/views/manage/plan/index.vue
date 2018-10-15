@@ -7,7 +7,7 @@
     <div class="search_input">
       <el-input placeholder="Enter keywords to search" v-model="params.keyword" class="input-with-select" @keyup.enter.native="query">
         <el-select v-model="params.gender" slot="prepend" placeholder="Select" style="width: 140px;" @change="query">
-          <el-option label="女" value="0"></el-option>
+          <el-option label="女" value="2"></el-option>
           <el-option label="男" value="1"></el-option>
         </el-select>
         <el-button slot="append" icon="el-icon-search" @click="query"></el-button>
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column label="性别要求" width="80">
         <template slot-scope="scope">
-          {{ scope.row.gender?'男':'女' }}
+          {{ scope.row.gender === 1?'男':'女' }}
         </template>
       </el-table-column>
       <el-table-column label="显示顺序" width="100">
@@ -231,12 +231,12 @@
       loading: false,
       listLoading: true,
       dialogVisible: false,
-      genders: [{label: '男', value: 1}, {label: '女', value: 0}],
+      genders: [{label: '男', value: 1}, {label: '女', value: 2}],
       params: {
         start: 0,
         limit: 10,
         keyword: '',
-        gender:'0'
+        gender:'2'
       },
       pageObj: {},
       id:null,
@@ -545,10 +545,10 @@
             this.attrKeys = this.maleAttr
           }
         })
-      } else if (row.gender === 0 && this.femaleAttr.length > 0) {//female
+      } else if (row.gender === 2 && this.femaleAttr.length > 0) {//female
         this.attrKeys = this.femaleAttr
-      } else if (row.gender === 0 && !this.femaleAttr.length) {//female
-        getAttr(0).then(({data}) => {
+      } else if (row.gender === 2 && !this.femaleAttr.length) {//female
+        getAttr(2).then(({data}) => {
           if (data['errorCode'] === 0) {
             this.femaleAttr = data['list']
             this.attrKeys = this.femaleAttr
@@ -718,7 +718,7 @@
           this.maleAttr = data['list']
         }
       })
-      getAttr(0).then(({data}) => {
+      getAttr(2).then(({data}) => {
         if (data['errorCode'] === 0) {
           this.femaleAttr = data['list']
         }
