@@ -113,7 +113,7 @@
     <!--event-->
     <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
       <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
-        <el-form-item label="source:" prop="source">
+        <el-form-item label="事件类型:" prop="source">
           <el-select v-model="formEvent.source">
             <el-option v-for="item in eventSourceList"
                     :key="item.value"
@@ -137,10 +137,10 @@
     <!--result-->
     <el-dialog :title='formResult.id?"Edit Result":"New Result"' :visible.sync="dialogVisibleInputResult" width="50%">
       <el-form label-width="100px" :model="formResult" :rules="ruleResult" ref="formResult">
-        <el-form-item label="resultText:" prop="resultText">
+        <el-form-item label="事件选项:" prop="resultText">
           <el-input type="text" v-model.number="formResult.resultText"></el-input>
         </el-form-item>
-        <el-form-item label="content:" prop="content">
+        <el-form-item label="结果描述:" prop="content">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model.number="formResult.content"></el-input>
         </el-form-item>
       </el-form>
@@ -156,7 +156,7 @@
     <!--Effect-->
     <el-dialog :title='formEffect.id?"Edit Effect":"New Effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
       <el-form label-width="100px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
-        <el-form-item label="operation:" prop="operation">
+        <el-form-item label="效果:" prop="operation">
           <el-select v-model="formEffect.operation">
             <el-option
                     v-for="item in operations"
@@ -166,7 +166,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="影响属性:" prop="attrKey">
           <el-select v-model="formEffect.attrKey">
             <el-option
                     v-for="item in filterOperation"
@@ -176,7 +176,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="影响值:" prop="value">
           <el-input type="text" v-model.number="formEffect.value"></el-input>
         </el-form-item>
       </el-form>
@@ -189,8 +189,8 @@
 
     <!--require-->
     <el-dialog :title='formRequire.id?"Edit Require":"New Require"' :visible.sync="dialogVisibleInputRequire" width="30%">
-      <el-form label-width="80px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
-        <el-form-item label="compare:" prop="compare">
+      <el-form label-width="100px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
+        <el-form-item label="限制:" prop="compare">
           <el-select v-model="formRequire.compare">
             <el-option
                     v-for="item in compareList"
@@ -200,7 +200,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="属性:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
             <el-option
                     v-for="item in attrKeys"
@@ -210,7 +210,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="值:" prop="value">
           <el-input type="text" v-model.number="formRequire.value"></el-input>
         </el-form-item>
       </el-form>

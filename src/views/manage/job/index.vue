@@ -14,12 +14,12 @@
       </el-input>
     </div>
     <el-table  v-loading="listLoading" :data="list"  element-loading-text="Loading" border stripe  fit  highlight-current-row>
-      <el-table-column label="岗位名称" width="150">
+      <el-table-column label="岗位名称" width="120">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="岗位薪水" width="100">
+      <el-table-column label="岗位薪水" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.price }}</span>
         </template>
@@ -34,7 +34,7 @@
           {{ scope.row.remarks }}
         </template>
       </el-table-column>
-      <el-table-column label="增益" width="50">
+      <el-table-column label="增益" width="70">
         <template slot-scope="scope">
           <el-popover  placement="top"   trigger="hover">
           <el-table  :data="scope.row.effectList"  border stripe  fit  highlight-current-row>
@@ -58,7 +58,7 @@
         </el-popover>
         </template>
       </el-table-column>
-      <el-table-column label="要求" width="50">
+      <el-table-column label="要求" width="70">
         <template slot-scope="scope">
           <el-popover  placement="top"   trigger="hover">
             <el-table  :data="scope.row.requireList"  border stripe  fit  highlight-current-row>
@@ -73,7 +73,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-tag type="danger" size="medium" slot="reference">V</el-tag>
+            <el-tag type="danger" size="medium" slot="reference">查看</el-tag>
           </el-popover>
         </template>
       </el-table-column>

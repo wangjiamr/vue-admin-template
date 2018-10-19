@@ -24,60 +24,60 @@
             <el-table-column type="expand">
               <template slot-scope="result">
                 <el-table :data="result.row.effectList">
-                  <el-table-column label="operation" width="90">
+                  <el-table-column label="效果" width="90">
                     <template slot-scope="scope">
                       <span>{{getOperationMapping(operations,scope.row.operation)}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column label="attrKey" width="100">
+                  <el-table-column label="影响属性" width="100">
                     <template slot-scope="scope">
                       {{ getAttrMapping(attrKeys,scope.row.attrKey)}}
                     </template>
                   </el-table-column>
-                  <el-table-column label="value" width="100">
+                  <el-table-column label="影响值" width="100">
                     <template slot-scope="scope">
                       {{ scope.row.value}}
                     </template>
                   </el-table-column>
-                  <el-table-column label="operate">
+                  <el-table-column label="操作">
                     <template slot-scope="scope">
-                      <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">Edit </el-button>
-                      <el-button size="mini" type="danger" @click="deleteEffect(scope.row)">Del </el-button>
+                      <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">编辑 </el-button>
+                      <el-button size="mini" type="danger" @click="deleteEffect(scope.row)">删除 </el-button>
                     </template>
                   </el-table-column>
                 </el-table>
               </template>
             </el-table-column>
-            <el-table-column label="resultText"  width="120">
+            <el-table-column label="事件选项"  width="180">
               <template slot-scope="scope">
                 {{ scope.row.resultText}}
               </template>
             </el-table-column>
-            <el-table-column label="content" width="170">
+            <el-table-column label="事件结果描述">
               <template slot-scope="scope">
                 {{ scope.row.content}}
               </template>
             </el-table-column>
-            <el-table-column label="require" width="100">
+            <el-table-column label="限制" width="100">
               <template slot-scope="scope">
                 {{ getRequire(compareList,scope.row)}}
               </template>
             </el-table-column>
-            <el-table-column label="operate" width="245">
+            <el-table-column label="操作" width="250">
               <template slot-scope="scope">
-                <el-button size="mini" @click="editShowResult( scope.row)">Edit</el-button>
+                <el-button size="mini" @click="editShowResult( scope.row)">编辑</el-button>
                 <el-button size="mini" type="danger" @click="handleDisableResult(scope.row)"
-                           v-if="scope.row.useYn==='Y'">Disabled
+                           v-if="scope.row.useYn==='Y'">禁用
                 </el-button>
                 <el-button size="mini" type="warning" @click="handleEnableResult(scope.row)"
-                           v-if="scope.row.useYn!=='Y'">Enable
+                           v-if="scope.row.useYn!=='Y'">启用
                 </el-button>
                 <el-popover  placement="top"   trigger="hover">
-                  <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">Up </el-button>
-                  <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">Down </el-button>
-                  <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">Add Effect</el-button>
-                  <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">Set Require</el-button>
-                  <el-button size="mini" type="danger" @click="clearRequire(scope.row)">Clear Require</el-button>
+                  <el-button size="mini" type="info" @click="dialogShowEffect(scope.row)">增益</el-button>
+                  <el-button size="mini" type="info" @click="dialogShowRequire(scope.row)">限制</el-button>
+                  <el-button size="mini" type="danger" @click="clearRequire(scope.row)">取消限制</el-button>
+                  <el-button size="mini" type="success"  @click="upResult( scope.row)" v-if="scope.$index">上移 </el-button>
+                  <el-button size="mini" type="success"  @click="downResult( scope.row)" v-if="scope.$index!==props.row.resultList.length-1">下移 </el-button>
                   <el-tag type="info" size="medium" slot="reference">更多操作</el-tag>
                 </el-popover>
               </template>
@@ -85,35 +85,35 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column label="source" width="180">
+      <el-table-column label="事件类型" width="180">
         <template slot-scope="scope">
           {{ getSourceMapping(eventSourceList,scope.row.source) }}
         </template>
       </el-table-column>
-      <el-table-column label="content">
+      <el-table-column label="事件内容">
         <template slot-scope="scope">
           {{ scope.row.content}}
         </template>
       </el-table-column>
-      <el-table-column label="operate">
+      <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button size="mini" @click="editShowEvent( scope.row)">Edit</el-button>
+          <el-button size="mini" @click="editShowEvent( scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDisableEvent(scope.row)"
-                     v-if="scope.row.useYn==='Y'">Disabled
+                     v-if="scope.row.useYn==='Y'">禁用
           </el-button>
           <el-button size="mini" type="warning" @click="handleEnableEvent(scope.row)"
-                     v-if="scope.row.useYn!=='Y'">Enable
+                     v-if="scope.row.useYn!=='Y'">启用
           </el-button>
-          <el-button size="mini" type="info" @click="addResultShow(scope.row)">Add result</el-button>
+          <el-button size="mini" type="info" @click="addResultShow(scope.row)">添加事件选项</el-button>
         </template>
       </el-table-column>
     </el-table>
 
 
     <!--event-->
-    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="30%">
-      <el-form label-width="80px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
-        <el-form-item label="source:" prop="source">
+    <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
+      <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEvent">
+        <el-form-item label="事件类型:" prop="source">
           <el-select v-model="formEvent.source">
             <el-option v-for="item in eventSourceList"
                        :key="item.value"
@@ -122,8 +122,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="content:" prop="content">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model.number="formEvent.content"></el-input>
+        <el-form-item label="事件内容:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model.number="formEvent.content"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -135,13 +135,13 @@
     </el-dialog>
 
     <!--result-->
-    <el-dialog :title='formResult.id?"Edit Result":"New Result"' :visible.sync="dialogVisibleInputResult" width="30%">
-      <el-form label-width="80px" :model="formResult" :rules="ruleResult" ref="formResult">
-        <el-form-item label="resultText:" prop="resultText">
+    <el-dialog :title='formResult.id?"Edit Result":"New Result"' :visible.sync="dialogVisibleInputResult" width="50%">
+      <el-form label-width="100px" :model="formResult" :rules="ruleResult" ref="formResult">
+        <el-form-item label="事件选项:" prop="resultText">
           <el-input type="text" v-model.number="formResult.resultText"></el-input>
         </el-form-item>
-        <el-form-item label="content:" prop="content">
-          <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model.number="formResult.content"></el-input>
+        <el-form-item label="结果描述:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model.number="formResult.content"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,8 +155,8 @@
 
     <!--Effect-->
     <el-dialog :title='formEffect.id?"Edit Effect":"New Effect"' :visible.sync="dialogVisibleInputEffect" width="30%">
-      <el-form label-width="80px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
-        <el-form-item label="operation:" prop="operation">
+      <el-form label-width="100px" :model="formEffect" :rules="ruleEffect" ref="formEffect">
+        <el-form-item label="效果:" prop="operation">
           <el-select v-model="formEffect.operation">
             <el-option
                     v-for="item in operations"
@@ -166,7 +166,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="影响属性:" prop="attrKey">
           <el-select v-model="formEffect.attrKey">
             <el-option
                     v-for="item in filterOperation"
@@ -176,7 +176,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="影响值:" prop="value">
           <el-input type="text" v-model.number="formEffect.value"></el-input>
         </el-form-item>
       </el-form>
@@ -189,8 +189,8 @@
 
     <!--require-->
     <el-dialog :title='formRequire.id?"Edit Require":"New Require"' :visible.sync="dialogVisibleInputRequire" width="30%">
-      <el-form label-width="80px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
-        <el-form-item label="compare:" prop="compare">
+      <el-form label-width="100px" :model="formRequire" :rules="ruleRequire" ref="formRequire">
+        <el-form-item label="限制:" prop="compare">
           <el-select v-model="formRequire.compare">
             <el-option
                     v-for="item in compareList"
@@ -200,7 +200,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="attrKey:" prop="attrKey">
+        <el-form-item label="属性:" prop="attrKey">
           <el-select v-model="formRequire.attrKey">
             <el-option
                     v-for="item in attrKeys"
@@ -210,7 +210,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="value:" prop="value">
+        <el-form-item label="值:" prop="value">
           <el-input type="text" v-model.number="formRequire.value"></el-input>
         </el-form-item>
       </el-form>
@@ -331,7 +331,7 @@
         return value
       },
       getRequire(array,row){
-        return this.getAttrMapping(array,row.attrKey)+' '+row.compare +' '+row.value
+        return row.value?this.getAttrMapping(array,row.attrKey)+' '+row.compare +' '+row.value:'无'
       },
       getAttrMapping(array,value){
         if(this.attrKeys.length){
