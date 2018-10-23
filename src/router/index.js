@@ -109,6 +109,12 @@ export const constantRouterMap = [
         name: 'Luck',
         component: () => import('@/views/manage/luck/index'),
         meta: { title: '运气', icon: 'tree' }
+      },
+      {
+        path: 'fund',
+        name: 'Fund',
+        component: () => import('@/views/manage/fund/index'),
+        meta: { title: '理财', icon: 'tree' }
       }
     ]
   },

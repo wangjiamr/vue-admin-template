@@ -15,14 +15,14 @@
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="投入" width="120">
+      <el-table-column label="最小值" width="120">
         <template slot-scope="scope">
-          <span>{{ scope.row.investPrice }}</span>
+          <span>{{ scope.row.minNum }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="赢得" width="120">
+      <el-table-column label="最大值" width="120">
         <template slot-scope="scope">
-          {{ scope.row.gainPrice}}
+          {{ scope.row.maxNum}}
         </template>
       </el-table-column>
       <el-table-column label="概率" width="80">
@@ -58,11 +58,11 @@
         <el-form-item label="标题:" prop="title">
           <el-input type="text" v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="投入:" prop="investPrice">
-          <el-input type="text" v-model.number="form.investPrice"></el-input>
+        <el-form-item label="最小值:" prop="minNum">
+          <el-input type="text" v-model.number="form.minNum"></el-input>
         </el-form-item>
-        <el-form-item label="赢得:" prop="gainPrice">
-          <el-input type="text" v-model.number="form.gainPrice"></el-input>
+        <el-form-item label="最大值:" prop="maxNum">
+          <el-input type="text" v-model.number="form.maxNum"></el-input>
         </el-form-item>
 
         <el-form-item label="概率:" prop="probability">
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-  import {getList, add, edit, enable, disable} from '@/api/luck'
+  import {getList, add, edit, enable, disable} from '@/api/fund'
 
   export default {
   data() {
@@ -104,8 +104,8 @@
       id:null,
       form: {
         title: null,
-        investPrice: null,
-        gainPrice: null,
+        minNum: null,
+        maxNum: null,
         probability: null,
         remarks: null
       },
@@ -113,11 +113,11 @@
         title: [
           {required: true, message: 'Required field,please entry ', trigger: 'blur'}
         ],
-        investPrice: [
+        minNum: [
           {required: true, message: 'Required field,please entry ', trigger: 'blur'},
           {type: 'number', message: 'Muset be number'}
         ],
-        gainPrice: [
+        maxNum: [
           {required: true, message: 'Required field,please entry ', trigger: 'blur'},
           {type: 'number', message: 'Muset be number'}
         ],
@@ -164,8 +164,8 @@
       this.id=null
       this.form = {
         title: null,
-        investPrice: null,
-        gainPrice: null,
+        minNum: null,
+        maxNum: null,
         probability: null,
         remarks: null
       }
@@ -202,8 +202,8 @@
       }
       this.form = {
         title: row.title,
-        investPrice: row.investPrice,
-        gainPrice: row.gainPrice,
+        minNum: row.minNum,
+        maxNum: row.maxNum,
         probability: row.probability,
         remarks: row.remarks
       }
