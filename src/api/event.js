@@ -93,3 +93,9 @@ export const getEventSource=(type)=>{
     method: 'get'
   })
 }
+
+
+export const addEvent=(action,id,data)=>{
+    data[`${action}Id`]=id
+  return postRequest( `/${action}/addEvent`,data)
+}

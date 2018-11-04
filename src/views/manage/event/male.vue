@@ -108,7 +108,16 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <el-pagination
+            style="margin-top: 20px;"
+            @size-change="sizeChange"
+            @current-change="pageChange"
+            :current-page="pageObj.currentPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="pageObj.everyPage"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pageObj.totalRecord">
+    </el-pagination>
 
     <!--event-->
     <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
@@ -243,6 +252,7 @@
           gender:null,
           keyword:null
         },
+        pageObj:{},
         formEvent: {
           content: null,
           source:null,
@@ -359,12 +369,24 @@
         this.paramsEvent.start = 0
         this.fetchDataEvent()
       },
+      sizeChange (val) {
+        this.paramsEvent.start = 0
+        this.paramsEvent.limit = val
+        this.fetchDataEvent()
+      },
+      pageChange (val) {
+        this.paramsEvent.start = (val - 1) * this.pageObj['everyPage']
+        this.fetchDataEvent()
+      },
       fetchDataEvent () {
         this.paramsEvent.gender=this.gender
         this.listLoadingEvent = true
         list(this.paramsEvent).then(({data}) => {
           if (data['errorCode'] === 0) {
             this.listEvent = data['list']
+            this.pageObj = data['pageObj']||{}
+            this.paramsEvent.start = this.pageObj['nextIndex']
+            this.paramsEvent.limit = this.pageObj['everyPage']
           }
           this.listLoadingEvent = false
         })

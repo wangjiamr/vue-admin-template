@@ -3,6 +3,8 @@
        element-loading-text="loading..."
        element-loading-spinner="el-icon-loading"
        element-loading-background="rgba(0, 0, 0, 0.8)">
+    <el-button type="info" style="margin-bottom: 20px;" @click="eventDialogShow">新建</el-button>
+
     <el-table  v-loading="listLoadingEvent" :data="listEvent"  element-loading-text="Loading"  border  stripe  fit  highlight-current-row>
 
       <el-table-column type="expand">
@@ -95,7 +97,16 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <el-pagination
+            style="margin-top: 20px;"
+            @size-change="sizeChange"
+            @current-change="pageChange"
+            :current-page="pageObj.currentPage"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="pageObj.everyPage"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="pageObj.totalRecord">
+    </el-pagination>
 
     <!--edit event-->
     <el-dialog :title='formEvent.id?"Edit Event":"New Event"' :visible.sync="dialogVisibleInputEvent" width="50%">
@@ -195,13 +206,28 @@
         <el-button @click="dialogVisibleInputRequire=false">取 消</el-button>
       </div>
     </el-dialog>
+
+
+
+    <!---event-->
+    <el-dialog title='新建' :visible.sync="dialogVisibleInputEvent" width="50%">
+      <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEventAdd">
+        <el-form-item label="事件内容:" prop="content">
+          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}"  v-model.number="formEvent.content"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitFormEvent">确定</el-button>
+        <el-button @click="dialogVisibleInputEvent=false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import {editEvent, enableEvent, disableEvent, eventList, getOperation, getAttr,getCompare} from '@/api/event'
   import {addResult, editResult, enableResult, disableResult, upResult, downResult} from '@/api/event'
-  import {addEffect, editEffect, deleteEffect,clearRequire,setRequire} from '@/api/event'
+  import {addEffect, editEffect, deleteEffect,clearRequire,setRequire,addEvent} from '@/api/event'
 
   export default {
     name: "event",
@@ -218,6 +244,7 @@
           start: 0,
           limit: 10
         },
+        pageObj: {},
         formEvent: {
           content: null,
           id: null
@@ -313,6 +340,20 @@
         }
         return value
       },
+
+      query(){
+        this.paramsEvent.start = 0
+        this.fetchDataEvent()
+      },
+      sizeChange (val) {
+        this.paramsEvent.start = 0
+        this.paramsEvent.limit = val
+        this.fetchDataEvent()
+      },
+      pageChange (val) {
+        this.paramsEvent.start = (val - 1) * this.pageObj['everyPage']
+        this.fetchDataEvent()
+      },
       fetchDataEvent () {
         this.listLoadingEvent = true
         const idObj={}
@@ -320,6 +361,9 @@
         eventList(Object.assign(this.paramsEvent,idObj),this.type).then(({data}) => {
           if (data['errorCode'] === 0) {
             this.listEvent = data['list']
+            this.pageObj = data['pageObj']||{}
+            this.paramsEvent.start = this.pageObj['nextIndex']
+            this.paramsEvent.limit = this.pageObj['everyPage']
           }
           this.listLoadingEvent = false
         })
@@ -777,6 +821,38 @@
           })
         }
         this.fetchDataEvent()
+      },
+      eventDialogShow({id}){
+        if (this.$refs.formEventAdd) {
+          this.$refs.formEventAdd.resetFields()
+        }
+        this.formEvent = {
+          content:null,
+          id:null
+        }
+        this.dialogVisibleInputEvent = true
+      },
+      submitFormEvent(){
+        this.$refs.formEventAdd.validate((valid) => {
+          if (valid) {
+            this.dialogVisibleInputEvent = false
+            const action=this.$route.params.type
+            const id=this.$route.params.id
+            addEvent(action,id,this.formEvent).then(({data}) => {
+              if (data['errorCode'] === 0) {
+                this.$message({
+                  message: '添加成功',
+                  type: 'success'
+                })
+                this.fetchDataEvent()
+              } else {
+                this.$message.error('添加失败')
+              }
+            })
+          } else {
+            return false
+          }
+        })
       }
     },
     created(){
