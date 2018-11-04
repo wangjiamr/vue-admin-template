@@ -116,7 +116,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="handleEditEvent" >修改</el-button>
+        <el-button type="primary" @click="submitFormEvent" v-if="!formEvent.id">确定</el-button>
+        <el-button type="primary" @click="handleEditEvent" v-if="formEvent.id">修改</el-button>
         <el-button @click="dialogVisibleInputEvent=false">取 消</el-button>
       </div>
     </el-dialog>
@@ -210,17 +211,17 @@
 
 
     <!---event-->
-    <el-dialog title='新建' :visible.sync="dialogVisibleInputEvent" width="50%">
-      <el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEventAdd">
-        <el-form-item label="事件内容:" prop="content">
-          <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}"  v-model.number="formEvent.content"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitFormEvent">确定</el-button>
-        <el-button @click="dialogVisibleInputEvent=false">取 消</el-button>
-      </div>
-    </el-dialog>
+    <!--<el-dialog title='新建' :visible.sync="dialogVisibleInputEvent" width="50%">-->
+      <!--<el-form label-width="100px" :model="formEvent" :rules="ruleEvent" ref="formEventAdd">-->
+        <!--<el-form-item label="事件内容:" prop="content">-->
+          <!--<el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}"  v-model.number="formEvent.content"></el-input>-->
+        <!--</el-form-item>-->
+      <!--</el-form>-->
+      <!--<div slot="footer" class="dialog-footer">-->
+        <!--<el-button type="primary" @click="submitFormEvent">确定</el-button>-->
+        <!--<el-button @click="dialogVisibleInputEvent=false">取 消</el-button>-->
+      <!--</div>-->
+    <!--</el-dialog>-->
   </div>
 </template>
 
@@ -823,8 +824,8 @@
         this.fetchDataEvent()
       },
       eventDialogShow({id}){
-        if (this.$refs.formEventAdd) {
-          this.$refs.formEventAdd.resetFields()
+        if (this.$refs.formEvent) {
+          this.$refs.formEvent.resetFields()
         }
         this.formEvent = {
           content:null,
@@ -833,7 +834,7 @@
         this.dialogVisibleInputEvent = true
       },
       submitFormEvent(){
-        this.$refs.formEventAdd.validate((valid) => {
+        this.$refs.formEvent.validate((valid) => {
           if (valid) {
             this.dialogVisibleInputEvent = false
             const action=this.$route.params.type
