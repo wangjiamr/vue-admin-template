@@ -100,13 +100,13 @@
         <el-form-item label="卖出价格:" prop="sellPrice">
           <el-input type="text" v-model.number="form.sellPrice"></el-input>
         </el-form-item>
-        <el-form-item label="买入涨跌幅:">
-          <el-input type="text" v-model.number="form.offsetBuy">
+        <el-form-item label="买入涨跌幅:" prop="offsetBuy">
+          <el-input type="text" v-model="form.offsetBuy">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="卖出涨跌幅:">
-          <el-input type="text" v-model.number="form.offsetSell">
+        <el-form-item label="卖出涨跌幅:" prop="offsetSell">
+          <el-input type="text" v-model="form.offsetSell">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
@@ -226,6 +226,15 @@
       }
     },
     data() {
+      var validateNumber = (rule, value, callback) => {
+        if (value) {
+          if (isNaN(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            callback()
+          }
+        }
+      }
       return {
         list: null,
         loading: false,
@@ -257,7 +266,9 @@
           sellPrice: [
             {required: true, message: 'Required field,please entry ', trigger: 'blur'},
             {type: 'number', message: 'Muset be number'}
-          ]
+          ],
+          offsetBuy:[ {validator:validateNumber, trigger: 'blur'} ] ,
+          offsetSell:[ {validator:validateNumber, trigger: 'blur'} ]
         },
         existAttr:[],
         operations:[],

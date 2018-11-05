@@ -25,6 +25,16 @@
           {{ scope.row.sellPrice }}
         </template>
       </el-table-column>
+      <el-table-column label="买入跌涨幅" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.offsetBuy }}
+        </template>
+      </el-table-column>
+      <el-table-column label="卖出跌涨幅" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.offsetSell }}
+        </template>
+      </el-table-column>
       <el-table-column label="备注">
         <template slot-scope="scope">
           {{ scope.row.remarks }}
@@ -89,6 +99,16 @@
         </el-form-item>
         <el-form-item label="卖出价格:" prop="sellPrice">
           <el-input type="text" v-model.number="form.sellPrice"></el-input>
+        </el-form-item>
+        <el-form-item label="买入涨跌幅:" prop="offsetBuy">
+          <el-input type="text" v-model="form.offsetBuy">
+            <template slot="append">%</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="卖出涨跌幅:" prop="offsetSell">
+          <el-input type="text" v-model="form.offsetSell">
+            <template slot="append">%</template>
+          </el-input>
         </el-form-item>
         <el-form-item label="备注">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.remarks"></el-input>
@@ -206,6 +226,15 @@
       }
     },
     data() {
+      var validateNumber = (rule, value, callback) => {
+        if (value) {
+          if (isNaN(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+            callback()
+          }
+        }
+      }
       return {
         list: null,
         loading: false,
@@ -222,7 +251,9 @@
           title: null,
           buyPrice:null,
           sellPrice:null,
-          remarks: null
+          remarks: null,
+          offsetBuy:null,
+          offsetSell:null
         },
         rules: {
           title: [
@@ -235,7 +266,9 @@
           sellPrice: [
             {required: true, message: 'Required field,please entry ', trigger: 'blur'},
             {type: 'number', message: 'Muset be number'}
-          ]
+          ],
+          offsetBuy:[ {validator:validateNumber, trigger: 'blur'} ] ,
+          offsetSell:[ {validator:validateNumber, trigger: 'blur'} ]
         },
         existAttr:[],
         operations:[],
@@ -360,7 +393,9 @@
           title: null,
           buyPrice:null,
           sellPrice:null,
-          remarks: null
+          remarks: null,
+          offsetBuy:null,
+          offsetSell:null
         }
         this.dialogVisible = true
       },
@@ -397,7 +432,9 @@
           title: row.title,
           buyPrice:row.buyPrice,
           sellPrice:row.sellPrice,
-          remarks: row.remarks
+          remarks: row.remarks,
+          offsetBuy:isNaN(row.offsetBuy)?0:row.offsetBuy,
+          offsetSell:isNaN(row.offsetSell)?0:row.offsetSell
         }
         this.id=row.id
         this.dialogVisible = true
