@@ -28,6 +28,11 @@
                       {{ scope.row.value}}
                     </template>
                   </el-table-column>
+                  <el-table-column label="是否百分比" width="150">
+                    <template slot-scope="scope">
+                      {{ scope.row.percent==='Y'?'是':'否'}}
+                    </template>
+                  </el-table-column>
                   <el-table-column label="操作" width="150">
                     <template slot-scope="scope">
                       <el-button size="mini" @click="editShowEffect( result.row.effectList,scope.row)">编辑 </el-button>
@@ -167,6 +172,10 @@
         <el-form-item label="影响值:" prop="value">
           <el-input type="text" v-model.number="formEffect.value"></el-input>
         </el-form-item>
+        <el-form-item label="是否百分比:">
+          <el-radio v-model="formEffect.percent" label="Y">是</el-radio>
+          <el-radio v-model="formEffect.percent" label="N">否</el-radio>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitFormEffect" v-if="!formEffect.id">确定</el-button>
@@ -279,6 +288,7 @@
           operation:null,
           attrKey:null,
           value:null,
+          percent:'N',
           id:null
         },
         ruleEffect:{
@@ -619,7 +629,8 @@
           operation:null,
           attrKey:null,
           value:null,
-          id:null
+          id:null,
+          percent:'N'
         }
         this.dialogVisibleInputEffect = true
         this.existAttr=[]
@@ -690,7 +701,8 @@
           operation:row.operation,
           attrKey:row.attrKey,
           value:row.value,
-          id:row.id
+          id:row.id,
+          percent:row.percent
         }
         this.dialogVisibleInputEffect = true
         this.existAttr=[]
