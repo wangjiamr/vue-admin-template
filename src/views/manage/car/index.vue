@@ -25,6 +25,16 @@
           {{ scope.row.sellPrice }}
         </template>
       </el-table-column>
+      <el-table-column label="买入跌涨幅" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.offsetBuy }}
+        </template>
+      </el-table-column>
+      <el-table-column label="卖出跌涨幅" width="100">
+        <template slot-scope="scope">
+          {{ scope.row.offsetSell }}
+        </template>
+      </el-table-column>
       <el-table-column label="备注" >
         <template slot-scope="scope">
           {{ scope.row.remarks }}
@@ -90,6 +100,17 @@
         <el-form-item label="卖出价格:" prop="sellPrice">
           <el-input type="text" v-model.number="form.sellPrice"></el-input>
         </el-form-item>
+        <el-form-item label="买入涨跌幅:">
+          <el-input type="text" v-model.number="form.offsetBuy">
+            <template slot="append">%</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="卖出涨跌幅:">
+          <el-input type="text" v-model.number="form.offsetSell">
+            <template slot="append">%</template>
+          </el-input>
+        </el-form-item>
+
         <el-form-item label="备注">
           <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 6}" v-model="form.remarks"></el-input>
         </el-form-item>
@@ -223,7 +244,9 @@
           title: null,
           buyPrice:null,
           sellPrice:null,
-          remarks: null
+          remarks: null,
+          offsetBuy:null,
+          offsetSell:null
         },
         rules: {
           title: [
@@ -361,7 +384,9 @@
           title: null,
           buyPrice:null,
           sellPrice:null,
-          remarks: null
+          remarks: null,
+          offsetBuy:null,
+          offsetSell:null
         }
         this.dialogVisible = true
       },
@@ -398,7 +423,9 @@
           title: row.title,
           buyPrice:row.buyPrice,
           sellPrice:row.sellPrice,
-          remarks: row.remarks
+          remarks: row.remarks,
+          offsetBuy:isNaN(row.offsetBuy)?0:row.offsetBuy,
+          offsetSell:isNaN(row.offsetSell)?0:row.offsetSell
         }
         this.id=row.id
         this.dialogVisible = true
