@@ -26,7 +26,9 @@
                 <el-table :data="result.row.effectList">
                   <el-table-column label="效果" width="90">
                     <template slot-scope="scope">
-                      <span>{{getOperationMapping(operations,scope.row.operation)}}</span>
+                      <el-tag :type='getOperationMapping(operations,scope.row.operation)==="+"?"danger":"success"'>
+                        {{getOperationMapping(operations,scope.row.operation)}}
+                      </el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column label="影响属性" width="100">
@@ -36,7 +38,7 @@
                   </el-table-column>
                   <el-table-column label="影响值" width="100">
                     <template slot-scope="scope">
-                      {{ scope.row.value}}
+                      <el-tag :type='getOperationMapping(operations,scope.row.operation)==="+"?"danger":"success"'>{{ getOperationMapping(operations,scope.row.operation)+ scope.row.value +(scope.row.percent==='Y'?'%':'')}}</el-tag>
                     </template>
                   </el-table-column>
                   <el-table-column label="是否百分比" width="150">
@@ -370,10 +372,10 @@
             return i.value===value
           })
           if(item){
-            return item.text
+            return item.text==='增加'?'+':item.text==='减少'?'-':item.text
           }
         }
-        return value
+        return value==='增加'?'+':value==='减少'?'-':value
       },
       query(){
         this.paramsEvent.start = 0
